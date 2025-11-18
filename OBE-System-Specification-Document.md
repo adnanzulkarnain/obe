@@ -171,11 +171,11 @@ Ketika kurikulum berubah, perlu **mapping** untuk:
 
 | Layer | Technology | Justification |
 |-------|-----------|---------------|
-| **Frontend** | React.js + TypeScript | Modern, component-based, type-safe |
-| **Backend** | Node.js + Express / FastAPI | Scalable, async, RESTful API |
+| **Frontend** | NextJS | Modern, component-based, type-safe |
+| **Backend** | FastAPI | Scalable, async, RESTful API |
 | **Database** | PostgreSQL 14+ | ACID compliance, JSON support, robust |
 | **Cache** | Redis | Session management, real-time data |
-| **Storage** | MinIO / S3 | Document storage (PDF, DOCX) |
+| **Storage** | Hardisk | Document storage (PDF, DOCX) |
 | **Auth** | JWT + OAuth2 | Secure, stateless authentication |
 | **Report** | Jasper Reports / WeasyPrint | Professional PDF generation |
 | **Monitoring** | Prometheus + Grafana | Performance monitoring |
