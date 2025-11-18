@@ -165,12 +165,20 @@ def include_routers(app: FastAPI) -> None:
         app: FastAPI application instance
     """
     # Import routers here to avoid circular imports
-    # from app.presentation.api.v1 import auth, kurikulum, cpl, matakuliah
+    from app.presentation.api.v1 import kurikulum
 
-    # TODO: Add routers when implemented
+    # Include routers
+    app.include_router(
+        kurikulum.router,
+        prefix=f"{settings.api_v1_prefix}/kurikulum",
+        tags=["Kurikulum Management"]
+    )
+
+    logger.info("✓ API routers registered")
+    # TODO: Add more routers as implemented
     # app.include_router(auth.router, prefix=f"{settings.api_v1_prefix}/auth", tags=["Authentication"])
-    # app.include_router(kurikulum.router, prefix=f"{settings.api_v1_prefix}/kurikulum", tags=["Kurikulum"])
-    pass
+    # app.include_router(cpl.router, prefix=f"{settings.api_v1_prefix}/cpl", tags=["CPL"])
+    # app.include_router(matakuliah.router, prefix=f"{settings.api_v1_prefix}/matakuliah", tags=["Mata Kuliah"])
 
 
 def add_event_handlers(app: FastAPI) -> None:
