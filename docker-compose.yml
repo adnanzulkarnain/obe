@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: obe_postgres
+    environment:
+      POSTGRES_DB: obe_system
+      POSTGRES_USER: obe_user
+      POSTGRES_PASSWORD: obe_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./OBE-Database-Schema-v3-WITH-KURIKULUM.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - obe_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U obe_user -d obe_system"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: obe_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - obe_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: obe_backend
+    environment:
+      DATABASE_URL: postgresql://obe_user:obe_password@postgres:5432/obe_system
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-change-this-in-production}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - obe_network
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # NextJS Frontend (placeholder for future implementation)
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: obe_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - obe_network
+  #   environment:
+  #     NEXT_PUBLIC_API_URL: http://backend:8000
+
+networks:
+  obe_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
