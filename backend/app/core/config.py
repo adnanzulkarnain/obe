@@ -27,7 +27,8 @@ class DatabaseSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="DATABASE_",
         env_file=".env",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"
     )
 
     def get_connection_url(self) -> str:
@@ -66,7 +67,8 @@ class SecuritySettings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"
     )
 
     @validator("secret_key")
@@ -104,7 +106,8 @@ class CORSSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="BACKEND_CORS_",
         env_file=".env",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"
     )
 
 

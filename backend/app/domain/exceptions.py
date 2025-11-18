@@ -80,3 +80,8 @@ class EnrollmentCurriculumMismatchException(InvalidOperationException):
             f"Kurikulum kelas: {class_curriculum}. "
             f"Ini adalah business rule BR-K04."
         )
+
+
+# Aliases for convenience
+NotFoundException = EntityNotFoundException
+DuplicateException = DuplicateEntityException

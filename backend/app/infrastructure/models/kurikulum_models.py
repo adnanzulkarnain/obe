@@ -14,6 +14,7 @@ from sqlalchemy import (
     DateTime,
     Date,
     ForeignKey,
+    ForeignKeyConstraint,
     Text,
     Numeric,
     Enum as SQLEnum,
@@ -260,7 +261,7 @@ class PrasyaratMK(Base):
 
     # Foreign key constraint
     __table_args__ = (
-        ForeignKey(
+        ForeignKeyConstraint(
             ['kode_mk', 'id_kurikulum'],
             ['matakuliah.kode_mk', 'matakuliah.id_kurikulum'],
             ondelete='CASCADE',
